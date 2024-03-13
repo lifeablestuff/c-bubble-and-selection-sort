@@ -1,0 +1,106 @@
+#include <iostream>
+#include <random>
+#include <utility>
+using namespace std;
+
+int randInt(int low, int high){
+    random_device rd;
+    mt19937 rng(rd());
+    uniform_int_distribution<int> dist(low,high);
+    return dist(rng);
+}
+
+int vfind(int n, const vector <int> &vec){
+    int loc = -1;
+    
+    for (uint x = 0; x<vec.size();++x){
+        if (vec.at(x) == n){
+            return x;
+        }
+    }
+    return loc;
+}
+
+void print_vector(const vector <int> &v){
+    for (auto i: v){
+        cout<<i<<" ";
+    
+    }
+}
+    
+vector <int> vsort(vector <int> &v);
+
+uint findmindex(vector <int> &vec,uint start);
+
+void ipvsort(vector <int> &v);
+
+int main(){
+    vector <int> x,sv,ips;
+    int target;
+    int a;
+    
+    for (int a = 0; a<20;a++){
+        x.push_back(randInt(10,99));
+    }
+    print_vector(x);
+    cout<<endl;
+    ips = x;
+    cout<<"Enter element you want to find: ";
+    cin>>target;
+    
+    a = vfind(target,x);
+    cout<<"The first time the element appears is at "<<a<< " index"<<endl;
+    
+    sv = vsort(x);
+    cout<<"This is the selected sorted"<<endl;
+    print_vector(sv);
+    
+    ipvsort(ips);
+    cout<<"in place sort"<<endl;
+    print_vector(ips);
+    return 0;
+}
+
+
+vector <int> vsort(vector <int> &v){
+    vector <int> sorted;
+    int min = 99;
+    while (0<v.size()){
+        for (auto x = v.begin();x<v.end();x++){
+            if (*x<min){
+                min = *x;
+                }
+            }
+        sorted.push_back(min);
+        v.erase(v.begin()+vfind(min,v));
+        min = 99;
+    }
+    return sorted;
+}
+
+    
+void ipvsort(vector <int> &v){
+    int lowest;
+    for (uint i = 0; i<v.size();i++){
+        if (i == v.size()-1)
+            break;
+        lowest = findmindex(v,i);
+        
+        swap(v.at(i),v.at(lowest));
+        
+        lowest = 99;
+        
+
+    }
+}
+
+
+uint findmindex(vector <int> &vec,uint start){
+    int lowest = 19;
+    for (uint i = start; i<vec.size();i++){
+        if (vec.at(i)<vec.at(lowest)){
+            lowest = i;
+        }
+    }
+    return lowest;
+}
